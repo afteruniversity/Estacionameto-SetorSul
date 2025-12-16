@@ -1,12 +1,69 @@
+# =======================
+# Back-end (.NET)
+# =======================
+
 # Build results
-bin/
-obj/
+back-end/bin/
+back-end/obj/
 
 # User-specific files
-*.suo
-*.user
-*.userosscache
-*.sln.docstates
+back-end/*.suo
+back-end/*.user
+back-end/*.userosscache
+back-end/*.sln.docstates
+
+# Build outputs
+back-end/[Dd]ebug/
+back-end/[Dd]ebugPublic/
+back-end/[Rr]elease/
+back-end/[Rr]eleases/
+back-end/x64/
+back-end/x86/
+back-end/[Aa][Rr][Mm]/
+back-end/[Aa][Rr][Mm]64/
+back-end/bld/
+back-end/[Bb]in/
+back-end/[Oo]bj/
+back-end/[Ll]og/
+back-end/[Ll]ogs/
+
+# .NET Core
+back-end/project.lock.json
+back-end/project.fragment.lock.json
+back-end/artifacts/
+
+# NuGet Packages
+back-end/*.nupkg
+back-end/*.snupkg
+back-end/**/packages/*
+
+# Sensitive files
+back-end/appsettings.Development.json
+back-end/appsettings.*.json
+!back-end/appsettings.example.json
+!back-end/appsettings.json
+
+# Logs
+back-end/*.log
+
+# =======================
+# Front-end (adicione quando criar)
+# =======================
+
+# Node modules
+front-end/node_modules/
+front-end/.next/
+front-end/out/
+front-end/build/
+front-end/dist/
+
+# Env files
+front-end/.env.local
+front-end/.env.*.local
+
+# =======================
+# IDE / Editors
+# =======================
 
 # Visual Studio Code
 .vscode/
@@ -15,40 +72,15 @@ obj/
 # Rider
 .idea/
 
-# Build outputs
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-x64/
-x86/
-[Aa][Rr][Mm]/
-[Aa][Rr][Mm]64/
-bld/
-[Bb]in/
-[Oo]bj/
-[Ll]og/
-[Ll]ogs/
-
-# .NET Core
-project.lock.json
-project.fragment.lock.json
-artifacts/
-
-# NuGet Packages
-*.nupkg
-*.snupkg
-**/packages/*
-
-# Sensitive files
-appsettings.Development.json
-appsettings.*.json
-!appsettings.example.json
-!appsettings.json
-
+# =======================
 # OS files
+# =======================
+
 .DS_Store
 Thumbs.db
 
-# Logs
+# =======================
+# Logs gerais
+# =======================
+
 *.log
