@@ -105,6 +105,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IEnderecoUsuarioService, EnderecoUsuarioService>();
+builder.Services.AddScoped<IEstacionamentoService, EstacionamentoService>();
 
 builder.Services.AddHealthChecks();
 
