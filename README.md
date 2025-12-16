@@ -11,10 +11,10 @@ Este projeto é uma plataforma moderna desenvolvida para modernizar o estacionam
 
 A aplicação foca na transparência de preços através de uma **calculadora inteligente** e oferece um painel de controle robusto para gestão de perfil e acessos.
 
-## ✨ Funcionalidades Principais
+## Funcionalidades Principais
 
 - **📅 Simulador de Escala:** O usuário seleciona os dias específicos da semana que pretende utilizar (ex: Seg, Qua, Sex).
-- **💰 Precificação Dinâmica:**
+- ** Precificação Dinâmica:**
   - Cálculo automático do custo semanal baseado nos dias selecionados.
   - Projeção de custo mensal.
   - **Lógica de Desconto:** Aplicação automática de **15% de desconto** para planos mensais, comparando com o valor avulso ("De/Por").
@@ -22,7 +22,7 @@ A aplicação foca na transparência de preços através de uma **calculadora in
   - Controle total sobre o plano ativo (upgrade/downgrade).
   - Configurações de perfil e dados pessoais.
   - Histórico de acessos e pagamentos.
-- **📱 Responsividade:** Totalmente adaptado para dispositivos móveis e desktops.
+- ** Responsividade:** Totalmente adaptado para dispositivos móveis e desktops.
 
 ## 🛠️ Tecnologias Utilizadas
 
