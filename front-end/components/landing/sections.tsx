@@ -1,3 +1,4 @@
+"use client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -8,12 +9,13 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { ArrowRight, Check, Code2 } from "lucide-react";
+import { useState } from "react";
+import { Check } from "lucide-react";
 import Link from "next/link";
 
 export function HeroSection() {
     return (
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-b from-background to-muted/20">
+        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-[linear-gradient(to_right,#adeada,#bdeadb,#cdeadc,#ddeadd,#edeade)]">
             <div className="container mx-auto flex flex-col items-center justify-center space-y-4 px-4 md:px-6 text-center">
                 <div className="space-y-2">
                     <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
@@ -22,18 +24,6 @@ export function HeroSection() {
                     <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
                         Segurança, praticidade e controle total para sua vaga. Mensalistas e rotativos com a melhor experiência.
                     </p>
-                </div>
-                <div className="space-x-4 pt-4">
-                    <Link href="/auth">
-                        <Button size="lg" className="h-11 px-8 gap-2">
-                            Começar Agora <ArrowRight className="h-4 w-4" />
-                        </Button>
-                    </Link>
-                    <Link href="#pricing">
-                        <Button variant="outline" size="lg" className="h-11 px-8">
-                            Ver Planos
-                        </Button>
-                    </Link>
                 </div>
             </div>
         </section>
@@ -70,7 +60,6 @@ export function AboutSection() {
                     </div>
                     <div className="flex items-center justify-center">
                         <div className="relative w-full aspect-video overflow-hidden rounded-xl border bg-muted shadow-sm flex items-center justify-center">
-                            {/* Placeholder Image */}
                             <span className="text-muted-foreground">Imagem do Estacionamento</span>
                         </div>
                     </div>
@@ -81,78 +70,143 @@ export function AboutSection() {
 }
 
 export function PricingSection() {
+    const [selectedDays, setSelectedDays] = useState<string[]>([]);
+
+    const weekDays = [
+        { key: 'Dom', label: 'D' },
+        { key: 'Seg', label: 'S' },
+        { key: 'Ter', label: 'T' },
+        { key: 'Qua', label: 'Q' },
+        { key: 'Qui', label: 'Q' },
+        { key: 'Sex', label: 'S' },
+        { key: 'Sab', label: 'S' },
+    ];
+
+    const toggleDay = (day: string) => {
+        if (selectedDays.includes(day)) {
+            setSelectedDays(selectedDays.filter((d) => d !== day));
+        } else {
+            setSelectedDays([...selectedDays, day]);
+        }
+    };
+
+    const PRICE_PER_DAY = 30; 
+    const DISCOUNT_PERCENTAGE = 0.20;
+    const daysCount = selectedDays.length;
+    const dailyCost = daysCount * PRICE_PER_DAY;
+    const baseMonthlyCost = dailyCost * 4;
+    const discountedMonthlyCost = baseMonthlyCost * (1 - DISCOUNT_PERCENTAGE);
+
     return (
-        <section id="pricing" className="w-full py-12 md:py-24 lg:py-32 bg-muted/40">
+        <section id="pricing" className="w-full py-12 md:py-24 lg:py-32 bg-[linear-gradient(to_right,#adeada,#bdeadb,#cdeadc,#ddeadd,#edeade)]">
             <div className="container mx-auto px-4 md:px-6">
                 <div className="flex flex-col items-center justify-center space-y-4 text-center">
                     <div className="space-y-2">
-                        <div className="inline-block rounded-lg bg-background border px-3 py-1 text-sm">Mensalidades</div>
-                        <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Planos Flexíveis</h2>
-                        <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                            Escolha o plano ideal para sua necessidade. Vagas limitadas.
+                        <div className="inline-block rounded-lg bg-background/50 border px-3 py-1 text-sm backdrop-blur-sm">Simulação Personalizada</div>
+                        <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-emerald-950">Monte sua escala</h2>
+                        <p className="max-w-[900px] text-emerald-800 md:text-xl/relaxed">
+                            Selecione os dias da semana que você utiliza e ganhe desconto no plano mensal.
                         </p>
                     </div>
+                    <div className="flex flex-wrap justify-center gap-2 mt-6 bg-white/40 p-4 rounded-xl border border-emerald-200/50 backdrop-blur-sm shadow-sm">
+                        {weekDays.map((day) => {
+                            const isSelected = selectedDays.includes(day.key);
+                            return (
+                                <button
+                                    key={day.key}
+                                    onClick={() => toggleDay(day.key)}
+                                    className={`
+                                        w-10 h-10 rounded-full font-bold text-sm transition-all duration-200 border
+                                        ${isSelected 
+                                            ? 'bg-emerald-600 text-white border-emerald-600 scale-110 shadow-md' 
+                                            : 'bg-white text-gray-500 border-gray-200 hover:border-emerald-400 hover:text-emerald-600'
+                                        }
+                                    `}
+                                >
+                                    {day.label}
+                                </button>
+                            );
+                        })}
+                    </div>
+                    
+                    {daysCount > 0 ? (
+                        <p className="text-sm font-medium text-emerald-900 animate-in fade-in">
+                            Você selecionou {daysCount} {daysCount === 1 ? 'dia' : 'dias'} por semana
+                        </p>
+                    ) : (
+                        <p className="text-sm font-medium text-emerald-900/50 animate-in fade-in">
+                            Selecione ao menos um dia acima
+                        </p>
+                    )}
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
-                    {/* Card 1: Avulso */}
-                    <Card className="flex flex-col">
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12 max-w-4xl mx-auto">
+                    <Card className="flex flex-col bg-white/80 border-emerald-100 shadow-lg">
                         <CardHeader>
-                            <CardTitle>Rotativo</CardTitle>
-                            <CardDescription>Para quem precisa estacionar esporadicamente.</CardDescription>
+                            <CardTitle>Pagamento Diário</CardTitle>
+                            <CardDescription>Sem compromisso de longo prazo.</CardDescription>
                         </CardHeader>
                         <CardContent className="flex-1">
-                            <div className="text-4xl font-bold">R$ 15<span className="text-xl font-normal text-muted-foreground">/hora</span></div>
-                            <ul className="mt-4 space-y-2 text-sm text-gray-500">
-                                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-primary" /> Pagamento na saída</li>
-                                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-primary" /> Sujeito a lotação</li>
+                            <div className="flex flex-col">
+                                <div className="text-4xl font-bold">
+                                    R$ {dailyCost}
+                                    <span className="text-xl font-normal text-muted-foreground">
+                                        /semana
+                                    </span>
+                                </div>
+                                <span className="text-xs text-muted-foreground mt-2">
+                                    {daysCount} dias x R$ {PRICE_PER_DAY},00
+                                </span>
+                            </div>
+                            <ul className="mt-6 space-y-2 text-sm text-gray-500">
+                                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-600" /> Flexibilidade total</li>
+                                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-600" /> Vaga rotativa</li>
                             </ul>
                         </CardContent>
                         <CardFooter>
-                            <Button className="w-full" variant="outline">Verificar Disponibilidade</Button>
+                            <Button className="w-full" variant="outline" disabled={daysCount === 0}>
+                                Reservar Semana
+                            </Button>
                         </CardFooter>
                     </Card>
-
-                    {/* Card 2: Mensal Diurno */}
-                    <Card className="flex flex-col relative border-primary shadow-lg scale-105 z-10">
-                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
-                            Mais Popular
+                    <Card className="flex flex-col relative border-emerald-500 shadow-xl bg-white scale-105 z-10">
+                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-600 text-white px-3 py-1 rounded-full text-xs font-bold uppercase whitespace-nowrap shadow-md">
+                            20% de Desconto Aplicado
                         </div>
                         <CardHeader>
-                            <CardTitle>Mensal Diurno</CardTitle>
-                            <CardDescription>Acesso garantido durante o horário comercial.</CardDescription>
+                            <CardTitle>Assinatura Mensal</CardTitle>
+                            <CardDescription>Garante sua vaga + Desconto exclusivo.</CardDescription>
                         </CardHeader>
                         <CardContent className="flex-1">
-                            <div className="text-4xl font-bold">R$ 250<span className="text-xl font-normal text-muted-foreground">/mês</span></div>
-                            <ul className="mt-4 space-y-2 text-sm text-gray-500">
-                                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-primary" /> Seg a Sex, 08h às 18h</li>
-                                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-primary" /> Vaga fixa garantida</li>
-                                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-primary" /> Controle via App</li>
-                            </ul>
-                        </CardContent>
-                        <CardFooter>
-                            <Link href="/auth" className="w-full">
-                                <Button className="w-full">Assinar Agora</Button>
-                            </Link>
-                        </CardFooter>
-                    </Card>
+                            <div className="flex flex-col">
+                                {daysCount > 0 && (
+                                    <span className="text-sm text-muted-foreground line-through decoration-red-400">
+                                        De R$ {baseMonthlyCost},00
+                                    </span>
+                                )}
+                                <div className="text-4xl font-bold text-emerald-950">
+                                    R$ {discountedMonthlyCost.toFixed(0)}
+                                    <span className="text-xl font-normal text-muted-foreground">
+                                        /mês
+                                    </span>
+                                </div>
+                                
+                                <span className="text-xs text-emerald-600 font-medium mt-2 block">
+                                    Você economiza R$ {(baseMonthlyCost - discountedMonthlyCost).toFixed(0)} por mês
+                                </span>
+                            </div>
 
-                    {/* Card 3: Integral */}
-                    <Card className="flex flex-col">
-                        <CardHeader>
-                            <CardTitle>Mensal Integral</CardTitle>
-                            <CardDescription>Acesso livre 24 horas por dia.</CardDescription>
-                        </CardHeader>
-                        <CardContent className="flex-1">
-                            <div className="text-4xl font-bold">R$ 350<span className="text-xl font-normal text-muted-foreground">/mês</span></div>
-                            <ul className="mt-4 space-y-2 text-sm text-gray-500">
-                                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-primary" /> Acesso 24/7</li>
-                                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-primary" /> Vaga VIP coberta</li>
-                                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-primary" /> Suporte prioritário</li>
+                            <ul className="mt-6 space-y-2 text-sm text-gray-500">
+                                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-600" /> Vaga <b>Garantida</b></li>
+                                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-600" /> Acesso automático</li>
+                                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-600" /> Pagamento único</li>
                             </ul>
                         </CardContent>
                         <CardFooter>
                             <Link href="/auth" className="w-full">
-                                <Button className="w-full" variant="outline">Assinar Agora</Button>
+                                <Button className="w-full bg-emerald-700 hover:bg-emerald-800 text-white" disabled={daysCount === 0}>
+                                    Assinar com Desconto
+                                </Button>
                             </Link>
                         </CardFooter>
                     </Card>
@@ -163,27 +217,5 @@ export function PricingSection() {
 }
 
 export function DevelopersSection() {
-    return (
-        <section id="developers" className="w-full py-12 md:py-24 lg:py-32 bg-background border-t">
-            <div className="container mx-auto px-4 md:px-6">
-                <div className="flex flex-col items-center justify-center space-y-4 text-center">
-                    <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Time</div>
-                    <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Desenvolvedores</h2>
-                    <p className="max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-                        Conheça a equipe por trás deste projeto.
-                    </p>
-                </div>
-                <div className="flex justify-center mt-10">
-                    {/* Simply a placeholder for dev cards or avatars */}
-                    <div className="flex flex-col items-center gap-2">
-                        <div className="h-20 w-20 rounded-full bg-muted flex items-center justify-center">
-                            <Code2 className="h-10 w-10 text-muted-foreground" />
-                        </div>
-                        <h3 className="font-semibold">Hackathon Team</h3>
-                        <p className="text-sm text-muted-foreground">Full Stack Engineers</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    );
+    return null;
 }
