@@ -11,4 +11,5 @@ public class ApplicationDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<EnderecoUsuario> EnderecosUsuarios { get; set; }
     public DbSet<Estacionamento> Estacionamentos { get; set; }
+    public DbSet<DiasSemana> DiasSemana { get; set; }
 }
