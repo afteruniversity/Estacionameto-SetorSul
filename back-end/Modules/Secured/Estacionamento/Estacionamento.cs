@@ -25,8 +25,8 @@ public class Estacionamento
 
     [Column("updated_at")]
     public DateTime UpdatedAt { get; set; }
+
+    [Column("is_active")]
+    public bool IsActive { get; set; } = true;
     
-
-
-
 }
