@@ -15,7 +15,6 @@ import { useState } from "react";
 const navItems = [
     { name: "Sobre o projeto", href: "#about" },
     { name: "Mensalidades", href: "#pricing" },
-    { name: "Desenvolvedores", href: "#developers" },
 ];
 
 export function Navbar() {
@@ -53,7 +52,7 @@ export function Navbar() {
                                 ))}
                                 <div className="pt-4">
                                     <Link href="/auth" onClick={() => setIsOpen(false)}>
-                                        <Button className="w-full">Login / Cadastro</Button>
+                                        <Button className="w-full bg-[#007BFF]">Login / Cadastro</Button>
                                     </Link>
                                 </div>
                             </nav>
