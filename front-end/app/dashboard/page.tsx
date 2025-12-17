@@ -217,7 +217,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Quick Actions */}
-        <div className="mt-8">
+        {/* <div className="mt-8">
           <h2 className="mb-4 text-2xl font-semibold">
             {t("dashboard.quickActions.title")}
           </h2>
@@ -244,7 +244,7 @@ export default function DashboardPage() {
               </CardHeader>
             </Card>
           </div>
-        </div>
+        </div> */}
       </main>
     </div>
   );

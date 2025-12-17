@@ -164,23 +164,23 @@ const dictionaries: Record<Language, Translations> = {
         afternoon: "Boa tarde",
         evening: "Boa noite",
       },
-      welcome: "Bem-vindo ao seu painel. Veja o que está acontecendo hoje.",
+      welcome: "Bem-vindo ao seu painel.",
       loading: "Carregando...",
       cards: {
         activeRentals: {
-          title: "Aluguéis Ativos",
-          description: "Seus aluguéis de carros atuais",
-          noActive: "Nenhum aluguel ativo",
+          title: "Meses usando nossos planos",
+          description: "Seus meses usando algum de nossos planos",
+          noActive: "Nenhum plano ativo",
         },
         upcomingBookings: {
-          title: "Reservas Futuras",
-          description: "Seus aluguéis agendados",
-          noUpcoming: "Nenhuma reserva futura",
+          title: "Descontos totais",
+          description: "Seus descontos usando o plano",
+          noUpcoming: "Nenhuma plano ativo",
         },
         totalTrips: {
-          title: "Total de Viagens",
-          description: "Todos os aluguéis",
-          startFirst: "Comece sua primeira viagem!",
+          title: "Uso total do estacionamento",
+          description: "Quantas vezes você usou os estacionamentos este mês",
+          startFirst: "Nenhum plano ativo",
         },
       },
       quickActions: {

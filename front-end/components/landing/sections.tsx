@@ -37,16 +37,19 @@ export function AboutSection() {
     return (
         <section id="about" className="w-full py-12 md:py-24 lg:py-32 bg-background">
             <div className="container mx-auto px-4 md:px-6">
-                <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
-                    <div className="space-y-4">
-                        <div className="inline-block rounded-lg bg-emerald-100 text-emerald-900 dark:bg-emerald-900 dark:text-emerald-100 px-3 py-1 text-sm">{t("about.badge")}</div>
+                <div className="flex flex-col items-center text-center space-y-8">
+                    <div className="space-y-4 flex flex-col items-center">
+                        <div className="inline-block rounded-lg bg-emerald-100 text-emerald-900 dark:bg-emerald-900 dark:text-emerald-100 px-3 py-1 text-sm">
+                            {t("about.badge")}
+                        </div>
+                        
                         <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-foreground">
                             {t("about.title")}
                         </h2>
-                        <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                        <p className="max-w-[600px] mx-auto text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                             {t("about.description")}
                         </p>
-                        <ul className="grid gap-4 mt-6">
+                        <ul className="grid gap-4 mt-6 mx-auto text-left">
                             <li className="flex items-center gap-2">
                                 <Check className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                                 <span className="text-foreground">{t("about.feature1")}</span>
@@ -61,11 +64,6 @@ export function AboutSection() {
                             </li>
                         </ul>
                     </div>
-                    <div className="flex items-center justify-center">
-                        <div className="relative w-full aspect-video overflow-hidden rounded-xl border bg-muted shadow-sm flex items-center justify-center">
-                            <span className="text-muted-foreground">{t("about.imageAlt")}</span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
@@ -75,12 +73,10 @@ export function AboutSection() {
 export function PricingSection() {
     const { t, language } = useLanguage();
     const [selectedDays, setSelectedDays] = useState<string[]>([]);
-
-    // Helper to get translated day labels
-    // Helper to get translated day labels
+    
+    // ... (getWeekDays e toggleDay permanecem iguais)
     const getWeekDays = () => {
         const days = t("common.days.short") as string[];
-        // Array order: 0=Seg, 1=Ter, 2=Qua, 3=Qui, 4=Sex, 5=Sab, 6=Dom
         return [
             { key: 'Dom', label: days[6] },
             { key: 'Seg', label: days[0] },
@@ -91,8 +87,6 @@ export function PricingSection() {
             { key: 'Sab', label: days[5] },
         ];
     };
-
-    const weekDays = getWeekDays();
 
     const toggleDay = (day: string) => {
         if (selectedDays.includes(day)) {
@@ -121,14 +115,14 @@ export function PricingSection() {
                         </p>
                     </div>
                     <div className="flex flex-wrap justify-center gap-2 mt-6 bg-white/40 dark:bg-black/20 p-4 rounded-xl border border-emerald-200/50 dark:border-emerald-800/50 backdrop-blur-sm shadow-sm">
-                        {weekDays.map((day) => {
+                        {getWeekDays().map((day) => {
                             const isSelected = selectedDays.includes(day.key);
                             return (
                                 <button
                                     key={day.key}
                                     onClick={() => toggleDay(day.key)}
                                     className={`
-                                        w-10 h-10 rounded-full font-bold text-sm transition-all duration-200 border
+                                        w-10 h-10 rounded-full font-bold text-sm transition-all duration-200 border cursor-pointer
                                         ${isSelected
                                             ? 'bg-emerald-600 text-white border-emerald-600 scale-110 shadow-md dark:bg-emerald-500'
                                             : 'bg-white text-gray-500 border-gray-200 hover:border-emerald-400 hover:text-emerald-600 dark:bg-transparent dark:text-emerald-100 dark:border-emerald-800 dark:hover:border-emerald-500'
@@ -153,6 +147,7 @@ export function PricingSection() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12 max-w-4xl mx-auto">
+                    {/* Card Semanal */}
                     <Card className="flex flex-col bg-white/80 dark:bg-black/40 border-emerald-100 dark:border-emerald-900 shadow-lg">
                         <CardHeader>
                             <CardTitle>{t("pricing.pricePerDay")}</CardTitle>
@@ -176,11 +171,23 @@ export function PricingSection() {
                             </ul>
                         </CardContent>
                         <CardFooter>
-                            <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white dark:bg-emerald-600" variant="outline" disabled={daysCount === 0}>
-                                {t("pricing.reserveWeek")}
-                            </Button>
+                            {/* O Link agora fica desativado visualmente e funcionalmente se diasCount for 0 */}
+                            <Link 
+                                href="/auth" 
+                                className={`w-full ${daysCount === 0 ? 'pointer-events-none' : ''}`}
+                            >
+                                <Button 
+                                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white dark:bg-emerald-600" 
+                                    variant="outline" 
+                                    disabled={daysCount === 0}
+                                >
+                                    {t("pricing.reserveWeek")}
+                                </Button>
+                            </Link>
                         </CardFooter>
                     </Card>
+
+                    {/* Card Mensal */}
                     <Card className="flex flex-col relative border-emerald-500 shadow-xl bg-white dark:bg-emerald-950/30 scale-105 z-10 dark:border-emerald-600">
                         <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-600 text-white px-3 py-1 rounded-full text-xs font-bold uppercase whitespace-nowrap shadow-md">
                             {t("pricing.discountBadge")}
@@ -202,12 +209,10 @@ export function PricingSection() {
                                         /mês
                                     </span>
                                 </div>
-
                                 <span className="text-xs text-emerald-600 font-medium mt-2 block dark:text-emerald-400">
                                     {t("pricing.savings").replace("{amount}", (baseMonthlyCost - discountedMonthlyCost).toFixed(0))}
                                 </span>
                             </div>
-
                             <ul className="mt-6 space-y-2 text-sm text-gray-500 dark:text-emerald-200/80">
                                 <li className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400" /> {t("pricing.features.2")}</li>
                                 <li className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400" /> {t("pricing.features.3")}</li>
@@ -215,8 +220,14 @@ export function PricingSection() {
                             </ul>
                         </CardContent>
                         <CardFooter>
-                            <Link href="/auth" className="w-full">
-                                <Button className="w-full bg-emerald-700 hover:bg-emerald-800 text-white dark:bg-emerald-600 dark:hover:bg-emerald-500" disabled={daysCount === 0}>
+                            <Link 
+                                href="/auth" 
+                                className={`w-full ${daysCount === 0 ? 'pointer-events-none' : ''}`}
+                            >
+                                <Button 
+                                    className="w-full bg-emerald-700 hover:bg-emerald-800 text-white dark:bg-emerald-600 dark:hover:bg-emerald-500" 
+                                    disabled={daysCount === 0}
+                                >
                                     {t("pricing.subscribeDiscount")}
                                 </Button>
                             </Link>
