@@ -39,7 +39,6 @@ export function Navbar({ hideNavItems = false }: { hideNavItems?: boolean }) {
   const currentLang =
     languages.find((l) => l.code === language) || languages[0];
 
-  // Auto-detect if on auth page
   const isAuthPage = pathname === "/auth";
   const shouldHideNavItems = hideNavItems || isAuthPage;
 
@@ -49,7 +48,6 @@ export function Navbar({ hideNavItems = false }: { hideNavItems?: boolean }) {
     setIsOpen(false);
   };
 
-  // Using t() to get translated nav items
   const navItems = [
     { name: t("nav.about"), href: "#about" },
     { name: t("nav.pricing"), href: "#pricing" },
@@ -58,7 +56,6 @@ export function Navbar({ hideNavItems = false }: { hideNavItems?: boolean }) {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center px-4 md:px-6">
-        {/* Mobile Menu */}
         <div className="mr-4 md:hidden">
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
@@ -171,8 +168,6 @@ export function Navbar({ hideNavItems = false }: { hideNavItems?: boolean }) {
             </SheetContent>
           </Sheet>
         </div>
-
-        {/* Desktop Left Navigation */}
         <div className="hidden md:flex md:items-center md:gap-6 lg:gap-8">
           <Link
             href={user ? "/dashboard" : "/"}
@@ -195,8 +190,6 @@ export function Navbar({ hideNavItems = false }: { hideNavItems?: boolean }) {
             </nav>
           )}
         </div>
-
-        {/* Spacer (Mobile Center Logo) */}
         <div className="flex-1 md:hidden flex justify-center">
           <Link
             href={user ? "/dashboard" : "/"}
@@ -206,10 +199,7 @@ export function Navbar({ hideNavItems = false }: { hideNavItems?: boolean }) {
             <span>Estacionamento</span>
           </Link>
         </div>
-
-        {/* Right Side (Language + Theme + Login/User) */}
         <div className="flex flex-1 items-center justify-end space-x-4">
-          {/* Theme Toggle */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -229,13 +219,8 @@ export function Navbar({ hideNavItems = false }: { hideNavItems?: boolean }) {
               <DropdownMenuItem onClick={() => setTheme("dark")}>
                 Escuro
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("system")}>
-                Sistema
-              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-
-          {/* Language Selector (Desktop) */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild className="hidden md:flex">
               <Button
@@ -261,8 +246,6 @@ export function Navbar({ hideNavItems = false }: { hideNavItems?: boolean }) {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-
-          {/* Login Button or User Menu */}
           <div className="hidden md:flex">
             {isLoadingUser ? (
               <div className="h-9 w-20 animate-pulse rounded-md bg-emerald-100 dark:bg-emerald-900" />
