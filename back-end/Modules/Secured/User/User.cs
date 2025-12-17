@@ -42,5 +42,11 @@ public class User
     [Column("is_active")]
     public bool IsActive { get; set; } = true;
 
+    [Column("plano_id")]
+    public int? PlanoId { get; set; }
+
+    [ForeignKey("PlanoId")]
+    public Plano? Plano { get; set; }
+
     public ICollection<EnderecoUsuario> Enderecos { get; set; } = new List<EnderecoUsuario>();
 }

@@ -2,6 +2,7 @@ namespace Skeleton.Controllers;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Skeleton.DTOs;
 using Skeleton.Interfaces;
 using Skeleton.Services;
@@ -12,10 +13,12 @@ using System.Security.Claims;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
+    private readonly ApplicationDbContext _context;
 
-    public AuthController(IAuthService authService)
+    public AuthController(IAuthService authService, ApplicationDbContext context)
     {
         _authService = authService;
+        _context = context;
     }
 
     [HttpPost("register")]
@@ -42,17 +45,39 @@ public class AuthController : ControllerBase
 
     [Authorize]
     [HttpGet("me")]
-    public IActionResult GetCurrentUser()
+    public async Task<IActionResult> GetCurrentUser()
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var username = User.FindFirst(ClaimTypes.Name)?.Value;
-        var email = User.FindFirst(ClaimTypes.Email)?.Value;
+
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized();
+        }
+
+        var user = await _context.Users
+            .Include(u => u.Plano)
+            .FirstOrDefaultAsync(u => u.Id == int.Parse(userId));
+
+        if (user == null)
+        {
+            return NotFound(new { message = "User not found" });
+        }
 
         return Ok(new
         {
-            id = userId,
-            username = username,
-            email = email
+            id = user.Id,
+            username = user.Username,
+            email = user.Email,
+            firstName = user.FirstName,
+            lastName = user.LastName,
+            plano = user.Plano != null ? new
+            {
+                id = user.Plano.Id,
+                nome = user.Plano.Nome,
+                tipo = user.Plano.Tipo,
+                preco = user.Plano.Preco,
+                quantidadeDiasSemana = user.Plano.QuantidadeDiasSemana
+            } : null
         });
     }
 }
