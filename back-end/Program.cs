@@ -8,12 +8,24 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Stripe;
+using Skeleton.Settings;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+builder.Services.Configure<StripeSettings>(
+    builder.Configuration.GetSection("Stripe")
+);
+
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>()
 ?? throw new InvalidOperationException("JwtSettings configuration is missing");
+
+var stripeSecretKey = builder.Configuration["Stripe:SecretKey"]
+    ?? throw new InvalidOperationException("Stripe SecretKey is missing");
+
+StripeConfiguration.ApiKey = stripeSecretKey;
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -107,6 +119,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IEnderecoUsuarioService, EnderecoUsuarioService>();
 builder.Services.AddScoped<IEstacionamentoService, EstacionamentoService>();
 builder.Services.AddScoped<IDiasSemanaService, DiasSemanaService>();
+builder.Services.AddScoped<IStripeService, StripeService>();
 
 builder.Services.AddHealthChecks();
 

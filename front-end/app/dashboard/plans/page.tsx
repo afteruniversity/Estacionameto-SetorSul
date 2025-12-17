@@ -5,11 +5,13 @@ import { PlanOffer } from "@/components/plans/PlanOffer"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { useLanguage } from "@/contexts/LanguageContext"
+import { useCheckout } from "@/hooks/useCheckout"
 import { CalendarDays } from "lucide-react"
 import { useState } from "react"
 
 export default function PlansManagementPage() {
     const { t } = useLanguage()
+    const { criarCheckout, isLoading, error } = useCheckout()
     // Mock state for simulation
     const [hasPlan, setHasPlan] = useState(false)
 
@@ -20,13 +22,29 @@ export default function PlansManagementPage() {
         nextRenewal: "23/12/2025",
     })
 
-    const handleSubscribe = (days: string[], cost: number) => {
-        setPlanData({
-            days,
-            weeklyValue: cost,
-            nextRenewal: "23/12/2025", // Mock date
-        })
-        setHasPlan(true)
+    const handleSubscribe = async (days: string[], cost: number, startDate: string, endDate: string) => {
+        const encodedUserId = localStorage.getItem("userId")
+        const userId = encodedUserId ? atob(encodedUserId) : null
+
+        const dadosAssinatura = {
+            usuarioId: userId,
+            dias: days,
+            valorSemanal: cost,
+            dataInicio: startDate,
+            dataFim: endDate,
+        }
+
+        try {
+            const checkoutUrl = await criarCheckout(dadosAssinatura)
+
+            if (checkoutUrl) {
+                console.log("Dados da assinatura: ", dadosAssinatura)
+                // Redirecionar para o checkout do Stripe
+                window.location.href = checkoutUrl
+            }
+        } catch (err) {
+            console.error("Erro ao processar assinatura:", err)
+        }
     }
 
     const handleCancel = () => {

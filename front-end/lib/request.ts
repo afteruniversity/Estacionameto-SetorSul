@@ -22,7 +22,7 @@ class RequestError extends Error implements ApiError {
   }
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 /**
  * Global request function with error handling, timeout, and automatic JSON parsing
