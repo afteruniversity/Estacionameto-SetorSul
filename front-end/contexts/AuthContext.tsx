@@ -10,6 +10,7 @@ import {
 import { api } from "@/lib/request";
 
 interface UserData {
+  id: string;
   username: string;
   email: string;
 }
@@ -45,9 +46,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
 
       setUser(userData);
+      const encodedId = btoa(userData.id);
+      localStorage.setItem("userId", encodedId);
     } catch (error) {
       console.error("Failed to fetch user data:", error);
       localStorage.removeItem("token");
+      localStorage.removeItem("userId");
       setUser(null);
     } finally {
       setIsLoading(false);
@@ -66,6 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     setUser(null);
   };
 
