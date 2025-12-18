@@ -100,10 +100,14 @@ export function PricingSection() {
   };
 
   const PRICE_PER_DAY = 7;
+  const PRICE_PER_DAY_PLAN = 5;
   const DISCOUNT_PERCENTAGE = 0.2;
   const daysCount = selectedDays.length;
+  // Preço semanal (sem plano)
   const dailyCost = daysCount * PRICE_PER_DAY;
-  const baseMonthlyCost = dailyCost * 4;
+  // Preço mensal (com plano, 5 reais por dia)
+  const dailyCostPlan = daysCount * PRICE_PER_DAY_PLAN;
+  const baseMonthlyCost = dailyCostPlan * 4;
   const discountedMonthlyCost = baseMonthlyCost * (1 - DISCOUNT_PERCENTAGE);
 
   return (
@@ -239,6 +243,9 @@ export function PricingSection() {
                     "{amount}",
                     (baseMonthlyCost - discountedMonthlyCost).toFixed(0)
                   )}
+                </span>
+                <span className="text-xs text-muted-foreground mt-2 dark:text-emerald-200/60">
+                  {daysCount} x R$ {PRICE_PER_DAY_PLAN},00
                 </span>
               </div>
               <ul className="mt-6 space-y-2 text-sm text-gray-500 dark:text-emerald-200/80">
