@@ -8,6 +8,36 @@ import { useRouter } from "next/navigation";
 export default function PaymentSuccessPage() {
   const router = useRouter();
 
+  const baixarRecibo = () => {
+    const conteudo = `
+RECIBO DE PAGAMENTO
+----------------------------
+
+Status: Aprovado
+Método: Cartão de Crédito
+Data: ${new Date().toLocaleDateString("pt-BR")}
+
+Plano: Assinatura Ativa
+
+Obrigado por utilizar nossa plataforma.
+    `.trim();
+
+    const blob = new Blob([conteudo], {
+      type: "text/plain;charset=utf-8",
+    });
+
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "recibo.txt";
+    document.body.appendChild(a);
+    a.click();
+
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-gray-50 via-gray-50/80 to-gray-100/50 dark:from-background dark:via-background/80 dark:to-muted/20 p-4">
       <div className="w-full max-w-md animate-in fade-in zoom-in duration-500">
@@ -35,30 +65,32 @@ export default function PaymentSuccessPage() {
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-muted-foreground">Método</span>
-                <span className="font-medium text-foreground">Cartão de Crédito</span>
+                <span className="font-medium text-foreground">
+                  Cartão de Crédito
+                </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-muted-foreground">Data</span>
                 <span className="font-medium text-foreground">
-                  {new Date().toLocaleDateString('pt-BR')}
+                  {new Date().toLocaleDateString("pt-BR")}
                 </span>
               </div>
             </div>
           </CardContent>
 
           <CardFooter className="flex flex-col gap-3 pb-8">
-            <Button 
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-500/20" 
-              onClick={() => router.push('/dashboard')}
+            <Button
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-500/20"
+              onClick={() => router.push("/dashboard")}
             >
               Voltar para meu painel
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
-            
-            <Button 
-              variant="ghost" 
+
+            <Button
+              variant="ghost"
               className="w-full text-muted-foreground"
-              onClick={() => console.log("Download recibo")}
+              onClick={baixarRecibo}
             >
               <Receipt className="mr-2 h-4 w-4" />
               Baixar Recibo
