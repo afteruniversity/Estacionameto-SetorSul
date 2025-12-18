@@ -143,7 +143,7 @@ const dictionaries: Record<Language, Translations> = {
     },
     footer: {
       copyright:
-        "© 2024 Estacionamento Setor Sul. Todos os direitos reservados.",
+        "© 2025 Estacionamento Setor Sul. Todos os direitos reservados.",
     },
     dashboard: {
       noPlan: {
@@ -618,7 +618,7 @@ interface LanguageContextProps {
 }
 
 const LanguageContext = createContext<LanguageContextProps | undefined>(
-  undefined,
+  undefined
 );
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
@@ -630,7 +630,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     for (const key of keys) {
       if (current[key] === undefined) {
         console.warn(
-          `Translation missing for key: ${path} in language: ${language}`,
+          `Translation missing for key: ${path} in language: ${language}`
         );
         return path;
       }
