@@ -27,31 +27,36 @@ const INTERNAL_DAYS = [
   "Ter",
   "Qua",
   "Qui",
-  "Sex",
-  "Sáb",
-  "Dom",
+  "Sex"
 ] as const;
-
+const AVG_WEEKS = 4.3
 const COST_PER_DAY = 7;
+const DESC_PER_DAYS = [
+  0,
+  7,
+  14,
+  21,
+  29
+]
+const COEFFICIENT = Math.pow(10, 1);
 
 export function PlanOffer({ onSubscribe }: PlanOfferProps) {
   const { t } = useLanguage();
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
-
+  
   const shortDays = t("common.days.short") as string[];
   const fullDays = t("common.days.full") as string[];
-
+  
   const toggleDay = (day: string) => {
     setSelectedDays((prev) =>
       prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
-    );
-  };
-
-  const totalCost = selectedDays.length * COST_PER_DAY;
-  const canSubscribe =
-    selectedDays.length > 0 && startDate !== "" && endDate !== "";
+  );
+};
+  const COST_DESC = COST_PER_DAY - (DESC_PER_DAYS[selectedDays.length - 1]/100 * COST_PER_DAY);
+  const totalCost = selectedDays.length * COST_DESC * AVG_WEEKS;
+  const canSubscribe =selectedDays.length > 0;
 
   const handleSubscribe = () => {
     if (canSubscribe) {
@@ -122,38 +127,6 @@ export function PlanOffer({ onSubscribe }: PlanOfferProps) {
 
         <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
-        {/* Vigency Period */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-            <Calendar className="h-4 w-4" />
-            <span>Período de Vigência do Contrato</span>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-muted-foreground">
-                Data de Início
-              </label>
-              <input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-muted-foreground">
-                Data de Término
-              </label>
-              <input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-              />
-            </div>
-          </div>
-        </div>
-
         <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
         {/* Pricing Summary */}
@@ -179,7 +152,7 @@ export function PlanOffer({ onSubscribe }: PlanOfferProps) {
               <span className="text-muted-foreground">
                 {t("plans.summary.costPerDay")}
               </span>
-              <span className="font-medium">R$ {COST_PER_DAY.toFixed(2)}</span>
+              <span className="font-medium">R$ {(Math.round(COST_DESC* COEFFICIENT) / COEFFICIENT| 0).toFixed(2)}</span>
             </div>
           </div>
 
@@ -190,7 +163,7 @@ export function PlanOffer({ onSubscribe }: PlanOfferProps) {
               {t("plans.summary.weeklyTotal")}
             </span>
             <span className="text-3xl font-bold text-primary">
-              R$ {totalCost.toFixed(2)}
+              R$ {(Math.floor(totalCost* COEFFICIENT) / COEFFICIENT|| 0).toFixed(2)}
             </span>
           </div>
         </div>
@@ -207,13 +180,10 @@ export function PlanOffer({ onSubscribe }: PlanOfferProps) {
             : t("plans.button.selectDays")}
         </Button>
 
-        {(selectedDays.length === 0 || startDate === "" || endDate === "") && (
+        {(selectedDays.length === 0) && (
           <p className="text-sm text-center text-muted-foreground">
             {selectedDays.length === 0
-              ? t("plans.prompt.selectDays")
-              : startDate === "" || endDate === ""
-              ? "Por favor, preencha o período de vigência"
-              : ""}
+              ? t("plans.prompt.selectDays"): ""}
           </p>
         )}
       </CardContent>

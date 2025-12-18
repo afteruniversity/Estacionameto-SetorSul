@@ -107,8 +107,10 @@ const dictionaries: Record<Language, Translations> = {
         autoRenewal: "renovação automática",
         cancelButton: "Cancelar Plano",
         saveChanges: "Salvar Alterações",
+        saving:"Salvando...",
         unsavedChanges: "Você tem alterações não salvas",
         clickToToggle: "Clique para salvar suas alterações",
+        selectAtLeastOne: "Selecione pelo menos um dia para continuar com sua assinatura",
         cancelAlert: {
           title: "Cancelar Plano",
           description:
@@ -309,6 +311,7 @@ const dictionaries: Record<Language, Translations> = {
         autoRenewal: "automatic renewal",
         cancelButton: "Cancel Plan",
         saveChanges: "Save changes",
+        saving: "Saving...",
         unsavedChanges: "You have unsaved changes",
         clickToToggle: "Click to save your changes",
         cancelAlert: {
@@ -512,6 +515,7 @@ const dictionaries: Record<Language, Translations> = {
         autoRenewal: "renovación automática",
         cancelButton: "Cancelar Plan",
         saveChanges: "Guardar Cambios",
+        saving:"Guardando...",
         unsavedChanges: "Tienes cambios sin guardar",
         clickToToggle: "Haz clic para guardar tus cambios",
         cancelAlert: {

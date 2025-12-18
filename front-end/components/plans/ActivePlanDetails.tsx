@@ -38,7 +38,7 @@ interface ActivePlanDetailsProps {
   onUpdateDays?: (newDays: string[], newWeeklyValue: number) => void;
 }
 
-const INTERNAL_DAYS = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
+const INTERNAL_DAYS = ["Seg", "Ter", "Qua", "Qui", "Sex"];
 const PRICE_PER_DAY = 5; // Ajuste conforme sua regra de negócio
 
 export function ActivePlanDetails({
