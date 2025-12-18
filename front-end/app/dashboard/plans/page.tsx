@@ -18,7 +18,7 @@ export default function PlansManagementPage() {
   // Mock data for active plan
   const [planData, setPlanData] = useState({
     days: ["Seg", "Qua", "Sex"],
-    weeklyValue: 35,
+    weeklyValue: 49,
     nextRenewal: "23/12/2025",
   });
 
@@ -49,6 +49,43 @@ export default function PlansManagementPage() {
       }
     } catch (err) {
       console.error("Erro ao processar assinatura:", err);
+    }
+  };
+
+  const handleUpdateDays = async (
+    newDays: string[],
+    newWeeklyValue: number
+  ) => {
+    try {
+      const encodedUserId = localStorage.getItem("userId");
+      const userId = encodedUserId ? atob(encodedUserId) : null;
+
+      if (!userId) return;
+
+      const response = await fetch(`/api/assinaturas/${userId}/dias`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          dias: newDays,
+          valorSemanal: newWeeklyValue,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Falha ao atualizar dias");
+      }
+
+      const data = await response.json();
+
+      // Atualiza o estado local
+      setPlanData({
+        days: data.dias ?? newDays,
+        weeklyValue: data.valorSemanal ?? newWeeklyValue,
+        nextRenewal: data.proximaRenovacao ?? planData?.nextRenewal ?? "",
+      });
+    } catch (err) {
+      console.error("Erro ao atualizar dias:", err);
+      throw err; // Propaga o erro para o componente reverter
     }
   };
 
@@ -110,6 +147,7 @@ export default function PlansManagementPage() {
               weeklyValue={planData.weeklyValue}
               nextRenewal={planData.nextRenewal}
               onCancel={handleCancel}
+              onUpdateDays={handleUpdateDays}
             />
           ) : (
             <div className="flex justify-center">

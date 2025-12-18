@@ -106,6 +106,9 @@ const dictionaries: Record<Language, Translations> = {
         nextRenewal: "Próxima Renovação",
         autoRenewal: "renovação automática",
         cancelButton: "Cancelar Plano",
+        saveChanges: "Salvar Alterações",
+        unsavedChanges: "Você tem alterações não salvas",
+        clickToToggle: "Clique para salvar suas alterações",
         cancelAlert: {
           title: "Cancelar Plano",
           description:
@@ -197,6 +200,7 @@ const dictionaries: Record<Language, Translations> = {
       logout: "Sair",
     },
     common: {
+      cancel: "Cancelar",
       days: {
         short: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
         full: [
@@ -304,6 +308,9 @@ const dictionaries: Record<Language, Translations> = {
         nextRenewal: "Next Renewal",
         autoRenewal: "automatic renewal",
         cancelButton: "Cancel Plan",
+        saveChanges: "Save changes",
+        unsavedChanges: "You have unsaved changes",
+        clickToToggle: "Click to save your changes",
         cancelAlert: {
           title: "Cancel Plan",
           description:
@@ -394,6 +401,7 @@ const dictionaries: Record<Language, Translations> = {
       logout: "Logout",
     },
     common: {
+      cancel: "Cancel",
       days: {
         short: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
         full: [
@@ -503,6 +511,9 @@ const dictionaries: Record<Language, Translations> = {
         nextRenewal: "Próxima Renovación",
         autoRenewal: "renovación automática",
         cancelButton: "Cancelar Plan",
+        saveChanges: "Guardar Cambios",
+        unsavedChanges: "Tienes cambios sin guardar",
+        clickToToggle: "Haz clic para guardar tus cambios",
         cancelAlert: {
           title: "Cancelar Plan",
           description:
@@ -595,6 +606,7 @@ const dictionaries: Record<Language, Translations> = {
       logout: "Cerrar sesión",
     },
     common: {
+      cancel: "Cancelar",
       days: {
         short: ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"],
         full: [
