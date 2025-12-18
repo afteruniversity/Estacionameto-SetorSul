@@ -8,14 +8,13 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useCheckout } from "@/hooks/useCheckout";
 import { CalendarDays } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function PlansManagementPage() {
   const { t } = useLanguage();
+  const router = useRouter();
   const { criarCheckout, isLoading, error } = useCheckout();
-  // Mock state for simulation
   const [hasPlan, setHasPlan] = useState(false);
-
-  // Mock data for active plan
   const [planData, setPlanData] = useState({
     days: ["Seg", "Qua", "Sex"],
     weeklyValue: 49,
@@ -40,13 +39,9 @@ export default function PlansManagementPage() {
     };
 
     try {
-      const checkoutUrl = await criarCheckout(dadosAssinatura);
-
-      if (checkoutUrl) {
-        console.log("Dados da assinatura: ", dadosAssinatura);
-        // Redirecionar para o checkout do Stripe
-        window.location.href = checkoutUrl;
-      }
+      console.log("Dados da assinatura (Simulação): ", dadosAssinatura);
+      await new Promise(resolve => setTimeout(resolve, 800));
+      router.push("/dashboard/paymentSuccess");
     } catch (err) {
       console.error("Erro ao processar assinatura:", err);
     }
@@ -76,8 +71,6 @@ export default function PlansManagementPage() {
       }
 
       const data = await response.json();
-
-      // Atualiza o estado local
       setPlanData({
         days: data.dias ?? newDays,
         weeklyValue: data.valorSemanal ?? newWeeklyValue,
@@ -85,7 +78,7 @@ export default function PlansManagementPage() {
       });
     } catch (err) {
       console.error("Erro ao atualizar dias:", err);
-      throw err; // Propaga o erro para o componente reverter
+      throw err;
     }
   };
 
@@ -96,7 +89,6 @@ export default function PlansManagementPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-50/80 to-gray-100/50 dark:from-background dark:via-background/80 dark:to-muted/20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        {/* Header Section */}
         <div className="mb-10">
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-6">
             <div className="space-y-2">
@@ -112,8 +104,6 @@ export default function PlansManagementPage() {
                 {t("plans.active.pageDesc")}
               </p>
             </div>
-
-            {/* DEV: Simulation Toggle */}
             <div className="flex items-center gap-3 bg-amber-50/80 backdrop-blur-sm px-5 py-3 rounded-xl border border-amber-200/50 shadow-sm lg:self-start dark:bg-amber-900/20 dark:border-amber-800/50">
               <Switch
                 id="simulation-mode"
@@ -134,12 +124,8 @@ export default function PlansManagementPage() {
               </Label>
             </div>
           </div>
-
-          {/* Divider with fade effect */}
           <div className="mt-8 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
         </div>
-
-        {/* Main Content Area */}
         <div className="pb-8">
           {hasPlan ? (
             <ActivePlanDetails
